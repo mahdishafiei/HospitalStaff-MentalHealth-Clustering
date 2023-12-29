@@ -1,5 +1,3 @@
 # Mental health outcomes of hospital staff during the COVID‑19 pandemic in Iran
 
-The global impact of the COVID-19 pandemic, with 769 million recorded cases and 6.95 million deaths by August 2023, has exerted immense pressure on healthcare systems. Frontline medical professionals, facing unprecedented challenges, are susceptible to stress, potentially leading to profound health implications. In this research we aimed to evaluate the mental health status of healthcare staff under effect of ongoing COVID-19 pandemic.
-
-due to 
+This study, conducted between 2021 and 2022 in hospitals in Tehran, Kerman, and Golpayegan, focused on the mental health of 1,231 nurses and physicians during the COVID-19 pandemic, which had caused 769 million cases and 6.95 million deaths by August 2023. Using the General Health Questionnaire-28 (GHQ-28) and the K-means clustering algorithm, researchers identified a cluster (Cluster two) with the highest mental distress scores, primarily consisting of females, bachelor's degree holders, and nurses. Among this group, anxiety/insomnia was a significant concern. The findings suggest the need for management plans, such as redistributing night shifts, to improve the mental health of hospital staff, especially those in roles most impacted by the pandemic.
