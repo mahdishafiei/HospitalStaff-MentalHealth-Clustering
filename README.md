@@ -5,9 +5,6 @@ This repository accompanies the open-access article published in **BMC Health Se
 
 The study evaluates the mental health of hospital staff (nurses and physicians) during COVID-19 in Iran using the GHQ-28 questionnaire and **K-means clustering** to uncover latent patterns in responses and demographics.
 
-## Repository Structure
-
-
 ## How to Reproduce
 
 ### Option A: R (recommended for parity with the paper)
