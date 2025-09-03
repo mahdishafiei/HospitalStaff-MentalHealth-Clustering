@@ -7,29 +7,6 @@ The study evaluates the mental health of hospital staff (nurses and physicians) 
 
 ## Repository Structure
 
-```
-mental-health-covid19-hospital-staff/
-│
-├── README.md                    # This file
-├── LICENSE                      # MIT License
-├── requirements.txt             # Python dependencies
-├── environment.yml              # Conda environment
-├── data/
-│   └── README.md               # Data documentation and schema
-├── analysis/
-│   ├── clustering.R            # Main R analysis script
-│   ├── visualization.py        # Python visualization script
-│   └── notebooks/
-│       └── exploratory_analysis.ipynb  # Jupyter notebook
-├── results/
-│   ├── figures/                # Generated plots and figures
-│   └── tables/                 # Generated tables and summaries
-└── paper/
-    ├── README.md               # Paper information
-    └── s12913-023-10430-w.pdf  # Published paper
-```
-
-
 
 ## How to Reproduce
 
@@ -42,7 +19,7 @@ mental-health-covid19-hospital-staff/
    ```r
    install.packages(c("tidyverse", "cluster", "factoextra", "ggplot2", "readr"))
    ```
-2. Place your **anonymized** GHQ-28 dataset at `data/ghq28_responses.csv`.
+2. Place GHQ-28 dataset at `data/ghq28_responses.csv`.
 3. Run the main analysis:
    ```bash
    Rscript analysis/clustering.R
