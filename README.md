@@ -1,3 +1,56 @@
-# Mental health outcomes of hospital staff during the COVID‑19 pandemic in Iran
+# Mental health outcomes of hospital staff during the COVID-19 pandemic in Iran
 
-This study, conducted between 2021 and 2022 in hospitals in Tehran, Kerman, and Golpayegan, focused on the mental health of 1,231 nurses and physicians during the COVID-19 pandemic, which had caused 769 million cases and 6.95 million deaths by August 2023. Using the General Health Questionnaire-28 (GHQ-28) and the K-means clustering algorithm, researchers identified a cluster (Cluster two) with the highest mental distress scores, primarily consisting of females, bachelor's degree holders, and nurses. Among this group, anxiety/insomnia was a significant concern. The findings suggest the need for management plans, such as redistributing night shifts, to improve the mental health of hospital staff, especially those in roles most impacted by the pandemic.
+This repository accompanies the open-access article published in **BMC Health Services Research (2023) 23:1447**:
+- DOI: 10.1186/s12913-023-10430-w
+
+The study evaluates the mental health of hospital staff (nurses and physicians) during COVID-19 in Iran using the GHQ-28 questionnaire and **K-means clustering** to uncover latent patterns in responses and demographics.
+
+## Repository Structure
+
+
+
+## How to Reproduce
+
+### Option A: R (recommended for parity with the paper)
+1. Install R (≥ 4.0) and the following packages:
+   ```r
+   install.packages(c("tidyverse", "cluster", "factoextra", "ggplot2"))
+   ```
+2. Place your **anonymized** GHQ-28 dataset at `data/ghq28_responses.csv`.
+3. Run:
+   ```bash
+   Rscript analysis/clustering.R
+   ```
+4. Outputs (figures and tables) will be written to `results/`.
+
+### Option B: Python (for exploration)
+Open `analysis/notebooks/exploratory_analysis.ipynb` and run the cells.
+It demonstrates the Elbow method and KMeans with `k=3` on a GHQ-like schema.
+
+## Expected Data Schema (example)
+- Demographics: `gender`, `marital_status`, `education_level`, `smoking`, `direct_exposure`, `chronic_disease`, `job`
+- GHQ-28 items: `ghq1 ... ghq28` (Likert scores; higher indicates greater distress)
+
+## Notes
+- The article is licensed under **CC BY 4.0** and included in `/paper`.
+- Patient-level data are **not** included here.
+- If you use this repository, please cite the paper 
+
+
+
+## Citation
+
+If you use this repository, please cite the following paper:
+
+```bibtex
+@article{salehi2023mental,
+  title={Mental health outcomes of hospital staff during the COVID-19 pandemic in Iran},
+  author={Salehi, Sahar and Jamali, Maryam and Shafiei Neyestanak, Mahdi and Amjaz, Milad Safaei and Baigi, Vali and Yekaninejad, Mir Saeed},
+  journal={BMC Health Services Research},
+  volume={23},
+  number={1},
+  pages={1447},
+  year={2023},
+  publisher={Springer}
+}
+```
