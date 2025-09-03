@@ -29,10 +29,18 @@ if (!file.exists(data_path)) {
   df <- readr::read_csv(data_path, show_col_types = FALSE)
 }
 
-# Compute GHQ-28 total
+# Compute GHQ-28 total and subscales
 ghq_cols <- paste0("ghq", 1:28)
 stopifnot(all(ghq_cols %in% names(df)))
-df <- df %>% mutate(ghq_total = rowSums(select(., all_of(ghq_cols)), na.rm = TRUE))
+
+# Calculate GHQ-28 subscales as per the paper
+df <- df %>% mutate(
+  ghq_total = rowSums(select(., all_of(ghq_cols)), na.rm = TRUE),
+  ghq_somatic = rowSums(select(., paste0("ghq", 1:7)), na.rm = TRUE),    # Items 1-7
+  ghq_anxiety = rowSums(select(., paste0("ghq", 8:14)), na.rm = TRUE),   # Items 8-14
+  ghq_social = rowSums(select(., paste0("ghq", 15:21)), na.rm = TRUE),   # Items 15-21
+  ghq_depression = rowSums(select(., paste0("ghq", 22:28)), na.rm = TRUE) # Items 22-28
+)
 
 # Save table of baseline characteristics
 dir.create("results/tables", showWarnings = FALSE, recursive = TRUE)
@@ -79,19 +87,66 @@ cluster_summary <- df %>%
   summarise(
     n = n(),
     mean_total = mean(ghq_total),
+    mean_somatic = mean(ghq_somatic),
+    mean_anxiety = mean(ghq_anxiety),
+    mean_social = mean(ghq_social),
+    mean_depression = mean(ghq_depression),
     female_pct = mean(gender == "Female") * 100,
     bachelor_pct = mean(education_level == "Bachelor") * 100,
     nurse_pct = mean(job == "Nurse") * 100,
-    direct_exposure_yes_pct = mean(direct_exposure == "Yes") * 100
+    direct_exposure_yes_pct = mean(direct_exposure == "Yes") * 100,
+    .groups = 'drop'
   )
 readr::write_csv(cluster_summary, "results/tables/cluster_summary.csv")
 
-# Plot mean GHQ total by cluster (similar to Fig. 2 concept)
+# GHQ-28 subscale analysis by cluster
+subscale_analysis <- df %>%
+  select(cluster, ghq_somatic, ghq_anxiety, ghq_social, ghq_depression) %>%
+  group_by(cluster) %>%
+  summarise(
+    across(c(ghq_somatic, ghq_anxiety, ghq_social, ghq_depression), 
+           list(mean = mean, sd = sd), na.rm = TRUE),
+    .groups = 'drop'
+  )
+readr::write_csv(subscale_analysis, "results/tables/ghq_subscales_by_cluster.csv")
+
+# Plot mean GHQ total by cluster
 p_cluster_mean <- df %>%
   group_by(cluster) %>%
   summarise(mean_total = mean(ghq_total)) %>%
-  ggplot(aes(cluster, mean_total)) + geom_col() +
-  labs(title = "Mean GHQ-28 Total by Cluster", x = NULL, y = "Mean total")
+  ggplot(aes(cluster, mean_total)) + 
+  geom_col(fill = c("#2E9FDF", "#E7B800", "#00AFBB"), alpha = 0.8) +
+  labs(title = "Mean GHQ-28 Total by Cluster", x = "Cluster", y = "Mean GHQ-28 Total Score") +
+  theme_minimal()
 ggsave("results/figures/mean_total_by_cluster.png", p_cluster_mean, width = 7, height = 5, dpi = 150)
 
+# Plot GHQ-28 subscales by cluster
+subscale_long <- df %>%
+  select(cluster, ghq_somatic, ghq_anxiety, ghq_social, ghq_depression) %>%
+  pivot_longer(cols = -cluster, names_to = "subscale", values_to = "score") %>%
+  group_by(cluster, subscale) %>%
+  summarise(mean_score = mean(score, na.rm = TRUE), .groups = 'drop') %>%
+  mutate(subscale = case_when(
+    subscale == "ghq_somatic" ~ "Somatic Symptoms",
+    subscale == "ghq_anxiety" ~ "Anxiety/Insomnia", 
+    subscale == "ghq_social" ~ "Social Dysfunction",
+    subscale == "ghq_depression" ~ "Severe Depression"
+  ))
+
+p_subscales <- ggplot(subscale_long, aes(x = subscale, y = mean_score, fill = cluster)) +
+  geom_col(position = "dodge", alpha = 0.8) +
+  labs(title = "Mean GHQ-28 Subscale Scores by Cluster", 
+       x = "GHQ-28 Subscale", y = "Mean Score") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(values = c("#2E9FDF", "#E7B800", "#00AFBB"))
+ggsave("results/figures/ghq_subscales_by_cluster.png", p_subscales, width = 10, height = 6, dpi = 150)
+
 message("Done. See results/ for outputs.")
+message("Generated files:")
+message("- results/tables/baseline_summary.csv")
+message("- results/tables/cluster_summary.csv") 
+message("- results/tables/ghq_subscales_by_cluster.csv")
+message("- results/figures/elbow_method.png")
+message("- results/figures/mean_total_by_cluster.png")
+message("- results/figures/ghq_subscales_by_cluster.png")
