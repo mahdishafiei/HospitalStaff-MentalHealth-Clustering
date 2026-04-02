@@ -46,11 +46,8 @@ The study evaluates the mental health of hospital staff (nurses and physicians) 
 - GHQ-28 items: `ghq1 ... ghq28` (Likert scores; higher indicates greater distress)
 
 ## Notes
-- The article is licensed under **CC BY 4.0** and included in `/paper`.
+- The article is licensed under **CC BY 4.0**.
 - Patient-level data are **not** included here.
-- If you use this repository, please cite the paper 
-
-
 
 ## Citation
 
